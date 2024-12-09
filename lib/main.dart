@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'firebase_options.dart';
+import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
@@ -54,7 +55,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  String _token = 'Fetching token...';
 
   @override
   void initState() {
@@ -66,17 +67,27 @@ class _MyHomePageState extends State<MyHomePage> {
     try {
       String? token = await FirebaseMessaging.instance.getToken();
       print("Firebase Messaging Token: $token");
+      setState(() {
+        _token = token ?? 'Failed to get token';
+      });
     } catch (e) {
       print("Error getting token: $e");
+       setState(() {
+        _token = 'Error getting token: $e';
+      });
     }
   }
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
+
+
+ void _copyToClipboard() {
+    Clipboard.setData(ClipboardData(text: _token)).then((_) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Token copied to clipboard!')),
+      );
     });
   }
-
+ 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,21 +98,28 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            const SizedBox(height: 20),
             const Text(
-              'You have pushed the button this many times:',
+              'Firebase Messaging Token:',
+              style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SelectableText(
+                _token,
+                textAlign: TextAlign.center,
+                style: const TextStyle(color: Colors.blue),
+              ),
+            ),
+              const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _copyToClipboard,  
+              child: const Text('Copy Token'),
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
+     
     );
   }
 }
