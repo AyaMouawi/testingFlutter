@@ -1,6 +1,6 @@
 {
-    "name": "pushnotificationupdate1",
-    "short_name": "pushnotificationupdate1",
+    "name": "aiReach push notification demo",
+    "short_name": "aiReach push notification demo",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

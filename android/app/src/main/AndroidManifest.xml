@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.pushnotificationupdate1">
    <application
-        android:label="pushnotificationupdate1"
+        android:label="aiReach push notification demo"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

@@ -38,6 +38,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   firebase_core: ^2.24.2
   firebase_messaging: ^14.7.10
+  http: ^0.13.5
 
 dev_dependencies:
   flutter_test:
@@ -60,6 +61,10 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
+   # To add assets to your application, add an assets section, like this:
+  assets:
+    - assets/
 
   # To add assets to your application, add an assets section, like this:
   # assets:
