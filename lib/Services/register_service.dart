@@ -3,11 +3,12 @@ import 'package:http/http.dart' as http;
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 class RegisterService {
-  static const String _url = 'https://test7.apliman.com/push_api/register/v1/';
+  static const String _url = 'https://test1.apliman.com/PUSH_GATEWAY/register/v1/';
 
   Future<Map<String, dynamic>> registerUser(String phoneNumber) async {
     try {
       String? token = await FirebaseMessaging.instance.getToken();
+      print("token $token");
       final payload = {
         "projectId": "pushnotificationupdate1",
         "msisdn": phoneNumber,

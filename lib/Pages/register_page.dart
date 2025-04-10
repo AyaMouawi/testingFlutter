@@ -43,43 +43,45 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   Future<void> _registerUser() async {
-    if (_formKey.currentState!.validate()) {
+  if (_formKey.currentState!.validate()) {
+    setState(() {
+      _isLoading = true;
+      _errorMessage = '';
+    });
+
+    try {
+      String phoneNumber = _phoneController.text;
+
+      final result = await _registerService.registerUser(phoneNumber);
+      print("API response: ${result.toString()}");  // Add this line
+
+      final responseBody = result['responseBody'];
       setState(() {
-        _isLoading = true;
-        _errorMessage = '';
-      });
-
-      try {
-        String phoneNumber = _phoneController.text;
-
-        final result = await _registerService.registerUser(phoneNumber);
-        final responseBody = result['responseBody'];
-        setState(() {
-          _isLoading = false;
-          if (result['statusCode'] == 200) {
-            if (responseBody['code'] == 20000) {
-              _responseMessage = 'Registered Successfully';
-              _isRegistered = true;
-            } else if (responseBody['code'] == 20004) {
-              _responseMessage = 'You are already registered';
-              _isRegistered = true;
-            } else {
-              _responseMessage =
-                  'An error occurred please contact your administrator';
-            }
+        _isLoading = false;
+        if (result['statusCode'] == 200) {
+          if (responseBody['code'] == 20000) {
+            _responseMessage = 'Registered Successfully';
+            _isRegistered = true;
+          } else if (responseBody['code'] == 20004) {
+            _responseMessage = 'You are already registered';
+            _isRegistered = true;
           } else {
-            _errorMessage =
+            _responseMessage =
                 'An error occurred please contact your administrator';
           }
-        });
-      } catch (e) {
-        setState(() {
-          _isLoading = false;
-          _errorMessage = 'Error registering user: $e';
-        });
-      }
+        } else {
+          _errorMessage =
+              'An error occurred please contact your administrator';
+        }
+      });
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+        _errorMessage = 'Error registering user: $e';
+      });
     }
   }
+}
 
   @override
   Widget build(BuildContext context) {
